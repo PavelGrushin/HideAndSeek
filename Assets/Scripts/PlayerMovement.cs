@@ -15,7 +15,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Components")]
     [SerializeField] private CharacterController _characterController;
     [SerializeField] private Transform _camera;
-    [SerializeField] private Animator _animator;
+    //[SerializeField] private Animator _animator;
     [SerializeField] private Transform _groundCheck;
     [SerializeField] private LayerMask _groundMask;
     [SerializeField] private Transform _scaleFace;
@@ -31,9 +31,11 @@ public class PlayerMovement : MonoBehaviour
     private float _smoothVelocity;
 
     private bool _isGraunded;
+    private bool _isSitting;
 
     void Start()
     {
+        _isSitting = false;
         _speed = _normalSpeed;
         Cursor.lockState = CursorLockMode.Locked;
     }
@@ -62,11 +64,11 @@ public class PlayerMovement : MonoBehaviour
 
             _characterController.Move(move.normalized * _speed * Time.deltaTime);
 
-            _animator.SetBool("Walk", true);
+            //_animator.SetBool("Walk", true);
         }
         if (_direction.magnitude <= 0.1f)
         {
-            _animator.SetBool("Walk", false);
+            //_animator.SetBool("Walk", false);
         }
     }
     private void BoostSpeed()           //  Бег
@@ -74,12 +76,12 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKey(_run) && _direction.magnitude >= 0.1f)
         {
             _speed = _boostSpeed;
-            _animator.SetBool("Run", true);
+            //_animator.SetBool("Run", true);
         }
         else
         {
             _speed = _normalSpeed;
-            _animator.SetBool("Run", false);
+            //_animator.SetBool("Run", false);
         }
 
     }
@@ -94,24 +96,45 @@ public class PlayerMovement : MonoBehaviour
         {
             _velocity.y = -2f;
         }
-        if (Input.GetKey(_jump) && _isGraunded)         
+        if (Input.GetKey(_jump) && _isGraunded)
         {
             _velocity.y = Mathf.Sqrt(_jumpHeight * -2f * _gravity);
 
-            _animator.SetBool("Jump", true);
+            //_animator.SetBool("Jump", true);
         }
         if (!_isGraunded)
         {
-            _animator.SetBool("Jump", false);
+            //_animator.SetBool("Jump", false);
         }
     }
     private void SitDown()              //  Сидеть
     {
-        if (Input.GetKeyDown(_sitDown))
+        if (Input.GetKeyDown(_sitDown) && !_isSitting)
         {
             _characterController.height = 1f;
             _characterController.center = new Vector3(0f, 0.5f, 0f);
+            _isSitting = true;
+            _speed = _normalSpeed;
+           // _animator.SetBool("Crouch", true);
         }
-
+        else if (_direction.magnitude >= 0.1f && _isSitting)
+        {
+            //_animator.SetBool("SneakWalk", true);
+            if (Input.GetKeyDown(_sitDown))
+            {
+                //_animator.SetBool("Walk", true);
+            }
+        }
+        else if (Input.GetKeyDown(_sitDown) && _isSitting)
+        {
+            _characterController.height = 1.84f;
+            _characterController.center = new Vector3(0f, 0.94f, 0f);
+            _isSitting = false;
+            //_animator.SetBool("Crouch", false);
+        }
+        else if (_direction.magnitude <= 0.1f)
+        {
+            //_animator.SetBool("SneakWalk", false);
+        }
     }
 }
