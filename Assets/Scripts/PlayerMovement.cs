@@ -2,16 +2,36 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField] private float _normalSpeed = 8f; //8
-    [SerializeField] private float _boostSpeed = 15f;
-    [SerializeField] private float _smoothTime; //0.2 скорость вращения объекта
+    [Header("Move")]
+    [SerializeField] private float _normalSpeed = 8f;           //  8
+    [SerializeField] private float _boostSpeed = 15f;           //  15
+    [SerializeField] private float _smoothTime;                 //  0.1 скорость вращения объекта
+
+    [Header("Jump")]
+    [SerializeField] private float _groundDistance = 0.4f;      //  0.4
+    [SerializeField] private float _gravity = -50f;             //  -30
+    [SerializeField] private float _jumpHeight = 4.5f;          //  3
+
+    [Header("Components")]
     [SerializeField] private CharacterController _characterController;
     [SerializeField] private Transform _camera;
     [SerializeField] private Animator _animator;
+    [SerializeField] private Transform _groundCheck;
+    [SerializeField] private LayerMask _groundMask;
+    [SerializeField] private Transform _scaleFace;
+
+    [Header("Keys")]
+    [SerializeField] private KeyCode _jump = KeyCode.Space;
+    [SerializeField] private KeyCode _run = KeyCode.LeftShift;
+    [SerializeField] private KeyCode _sitDown = KeyCode.LeftControl;
 
     private Vector3 _direction;
+    private Vector3 _velocity;
     private float _speed;
     private float _smoothVelocity;
+
+    private bool _isGraunded;
+
     void Start()
     {
         _speed = _normalSpeed;
@@ -22,9 +42,11 @@ public class PlayerMovement : MonoBehaviour
     {
         Move();
         BoostSpeed();
+        Jump();
+        SitDown();
     }
 
-    private void Move()                 //Движение, повороты.
+    private void Move()                 //  Движение, повороты.
     {
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
@@ -47,10 +69,9 @@ public class PlayerMovement : MonoBehaviour
             _animator.SetBool("Walk", false);
         }
     }
-
-    private void BoostSpeed()           //Бег
+    private void BoostSpeed()           //  Бег
     {
-        if (Input.GetKey(KeyCode.LeftShift) && _direction.magnitude >= 0.1f)
+        if (Input.GetKey(_run) && _direction.magnitude >= 0.1f)
         {
             _speed = _boostSpeed;
             _animator.SetBool("Run", true);
@@ -62,5 +83,35 @@ public class PlayerMovement : MonoBehaviour
         }
 
     }
+    private void Jump()                 //  Прыжок
+    {
+        _isGraunded = Physics.CheckSphere(_groundCheck.position, _groundDistance, _groundMask);
 
+        _velocity.y += _gravity * Time.deltaTime;
+        _characterController.Move(_velocity * Time.deltaTime);
+
+        if (_isGraunded && _velocity.y < 0)
+        {
+            _velocity.y = -2f;
+        }
+        if (Input.GetKey(_jump) && _isGraunded)         
+        {
+            _velocity.y = Mathf.Sqrt(_jumpHeight * -2f * _gravity);
+
+            _animator.SetBool("Jump", true);
+        }
+        if (!_isGraunded)
+        {
+            _animator.SetBool("Jump", false);
+        }
+    }
+    private void SitDown()              //  Сидеть
+    {
+        if (Input.GetKeyDown(_sitDown))
+        {
+            _characterController.height = 1f;
+            _characterController.center = new Vector3(0f, 0.5f, 0f);
+        }
+
+    }
 }
