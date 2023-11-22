@@ -98,7 +98,7 @@ public class PlayerMovement : MonoBehaviour
         {
             _velocity.y = -2f;
         }
-        if (Input.GetKey(_jump) && _isGraunded)
+        if (Input.GetKeyDown(_jump) && _isGraunded)
         {
             _velocity.y = Mathf.Sqrt(_jumpHeight * -2f * _gravity);
 
