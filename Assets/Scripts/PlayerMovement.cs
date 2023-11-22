@@ -7,6 +7,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Move")]
     [SerializeField] private float _normalSpeed = 8f;           //  8
     [SerializeField] private float _boostSpeed = 15f;           //  15
+    [SerializeField] private float _sneakSpeed = 5f;            //  5
     [SerializeField] private float _smoothTime;                 //  0.1 скорость вращения объекта
 
     [Header("Jump")]
@@ -21,7 +22,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Transform _groundCheck;
     [SerializeField] private LayerMask _groundMask;
     [SerializeField] private Transform _scaleFace;
-
+    
     [Header("Keys")]
     [SerializeField] private KeyCode _jump = KeyCode.Space;
     [SerializeField] private KeyCode _run = KeyCode.LeftShift;
@@ -74,7 +75,7 @@ public class PlayerMovement : MonoBehaviour
     }
     private void BoostSpeed()           //  Бег
     {
-        if (Input.GetKey(_run) && _direction.magnitude >= 0.1f)
+        if ((Input.GetKey(_run) && _direction.magnitude >= 0.1f) && !_isSitting)
         {
             _speed = _boostSpeed;
             _animator.SetBool("Run", true);
@@ -100,24 +101,49 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKey(_jump) && _isGraunded)
         {
             _velocity.y = Mathf.Sqrt(_jumpHeight * -2f * _gravity);
+
+            _animator.SetBool("Jump", true);
+        }
+        if (_velocity.y < -7)
+        {
+            _animator.SetBool("Jump", false);
         }
     }
     private void SitDown()              //  Приседание
     {
+        if (_isSitting)
+        {
+            _speed = _sneakSpeed;
+        }
         if (Input.GetKeyDown(_sitDown) && !_isSitting)
         {
             _characterController.height = 1f;
             _characterController.center = new Vector3(0f, 0.5f, 0f);
             _isSitting = true;
-            _speed = _normalSpeed;
+
             _animator.SetBool("Crouch", true);
         }
+
         else if (Input.GetKeyDown(_sitDown) && _isSitting)
         {
             _characterController.height = 1.84f;
             _characterController.center = new Vector3(0f, 0.94f, 0f);
             _isSitting = false;
+
             _animator.SetBool("Crouch", false);
+            _animator.SetBool("SneakWalk", false);
+        }
+        else if (_direction.magnitude >= 0.1f && _isSitting)
+        {
+            _animator.SetBool("SneakWalk", true);
+        }
+        else if (_direction.magnitude <= 0.1f && _isSitting)
+        {
+            _animator.SetBool("SneakWalk", false);
+        }
+        else if (_direction.magnitude <= 0.1f && !_isSitting)
+        {
+            _animator.SetBool("SneakWalk", false);
         }
     }
 }
