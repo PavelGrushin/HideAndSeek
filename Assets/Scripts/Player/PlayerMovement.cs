@@ -1,8 +1,9 @@
+using Cinemachine;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMove_Lobby : MonoBehaviour
 {
     [Header("Move")]
     [SerializeField] private float _normalSpeed = 8f;           //  8
@@ -22,11 +23,13 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Transform _groundCheck;
     [SerializeField] private LayerMask _groundMask;
     [SerializeField] private Transform _scaleFace;
-    
+    [SerializeField] private GameObject _cineMachine;
+
     [Header("Keys")]
     [SerializeField] private KeyCode _jump = KeyCode.Space;
     [SerializeField] private KeyCode _run = KeyCode.LeftShift;
     [SerializeField] private KeyCode _sitDown = KeyCode.LeftControl;
+    [SerializeField] private KeyCode _changeCamera = KeyCode.LeftAlt;
 
     private Vector3 _direction;
     private Vector3 _velocity;
@@ -35,6 +38,7 @@ public class PlayerMovement : MonoBehaviour
 
     private bool _isGraunded;
     private bool _isSitting;
+    private bool _cameraAktive = true;
 
     void Start()
     {
@@ -49,6 +53,7 @@ public class PlayerMovement : MonoBehaviour
         BoostSpeed();
         Jump();
         SitDown();
+        ChangeCamera();
     }
 
     private void Move()                 //  Движение, повороты.
@@ -144,6 +149,15 @@ public class PlayerMovement : MonoBehaviour
         else if (_direction.magnitude <= 0.1f && !_isSitting)
         {
             _animator.SetBool("SneakWalk", false);
+        }
+    }
+    private void ChangeCamera()         //Смена Камеры
+    {
+        if (Input.GetKeyDown(_changeCamera))
+        {    
+            _cineMachine.SetActive(!_cameraAktive);
+
+            _cameraAktive = !_cameraAktive;
         }
     }
 }
