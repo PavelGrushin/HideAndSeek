@@ -3,7 +3,7 @@ using Vector3 = UnityEngine.Vector3;
 
 namespace Project
 {
-    public class DargAndDropPresenter : MonoBehaviour
+    public class DragAndDropPresenter : MonoBehaviour
     {
         public delegate void OnDragAndDropHandler();
         public static event OnDragAndDropHandler OnDraggableSpot;
@@ -19,7 +19,7 @@ namespace Project
         [SerializeField] private float _rayLenght;
         [SerializeField] private Transform _camera;
 
-        [SerializeField] private Transform _pickUpSocket;
+        public Transform Hand;
         [SerializeField] private float _scrolSensivity;
         [SerializeField] private float _minPositionOnZ = 0.8f;
         [SerializeField] private float _maxPositionOnZ = 3;
@@ -158,10 +158,10 @@ namespace Project
             if (_draggableObject == null)
                 return;
 
-            float clampedPosition = Mathf.Clamp(_pickUpSocket.localPosition.z + value, _minPositionOnZ, _maxPositionOnZ);
+            float clampedPosition = Mathf.Clamp(Hand.localPosition.z + value, _minPositionOnZ, _maxPositionOnZ);
 
-            _pickUpSocket.SetLocalPositionAndRotation(new Vector3(_pickUpSocket.localPosition.x,
-                _pickUpSocket.localPosition.y, clampedPosition), Quaternion.identity);
+            Hand.SetLocalPositionAndRotation(new Vector3(Hand.localPosition.x,
+                Hand.localPosition.y, clampedPosition), Quaternion.identity);
         }
 
         private void PrepareToDrag(RaycastHit hit)
@@ -180,16 +180,16 @@ namespace Project
             _draggableObject.GetComponent<Draggable>().PrepareToDrop();
 
 
-            _pickUpSocket.transform.localPosition = new Vector3(_pickUpSocket.transform.localPosition.x,
-                        _pickUpSocket.transform.localPosition.y, _minPositionOnZ);
+            Hand.transform.localPosition = new Vector3(Hand.transform.localPosition.x,
+                        Hand.transform.localPosition.y, _minPositionOnZ);
             _rigidbodyOfDraggableObject = null;
             _draggableObject = null;
         }
 
         private void DropWithForce()
         {
-            _pickUpSocket.transform.localPosition = new Vector3(_pickUpSocket.transform.localPosition.x,
-                _pickUpSocket.transform.localPosition.y, _minPositionOnZ);
+            Hand.transform.localPosition = new Vector3(Hand.transform.localPosition.x,
+                Hand.transform.localPosition.y, _minPositionOnZ);
 
 
             _draggableObject.GetComponent<Draggable>().DropWithForce(_camera.forward, _dropForce);
@@ -200,7 +200,7 @@ namespace Project
 
         private void Drag()
         {
-            Vector3 direction = _pickUpSocket.position - _rigidbodyOfDraggableObject.position;
+            Vector3 direction = Hand.position - _rigidbodyOfDraggableObject.position;
             _rigidbodyOfDraggableObject.velocity = direction * _dragForce;
         }
     }

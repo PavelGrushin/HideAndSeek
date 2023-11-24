@@ -1,4 +1,6 @@
 using Cinemachine;
+using Project;
+using UnityEditor;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
@@ -54,6 +56,12 @@ public class PlayerMove_Lobby : MonoBehaviour
         Jump();
         SitDown();
         ChangeCamera();
+
+        DragAndDropPresenter dragAndDropPresenter = FindObjectOfType<DragAndDropPresenter>();
+        if (!_cameraAktive)
+        {
+            //dragAndDropPresenter.Hand.position = new Vector3(-0.017f, -0.186f, 0.753f);
+        }
     }
 
     private void Move()                 //  Движение, повороты.
@@ -156,7 +164,6 @@ public class PlayerMove_Lobby : MonoBehaviour
         if (Input.GetKeyDown(_changeCamera))
         {    
             _cineMachine.SetActive(!_cameraAktive);
-
             _cameraAktive = !_cameraAktive;
         }
     }
