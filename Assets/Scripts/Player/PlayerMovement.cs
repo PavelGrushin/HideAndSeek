@@ -1,11 +1,9 @@
-using Cinemachine;
 using Project;
-using UnityEditor;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
 
-public class PlayerMove_Lobby : MonoBehaviour
+public class PlayerMovement : MonoBehaviour
 {
     [Header("Move")]
     [SerializeField] private float _normalSpeed = 8f;           //  8
@@ -42,10 +40,12 @@ public class PlayerMove_Lobby : MonoBehaviour
     private bool _isSitting;
     private bool _cameraAktive = true;
 
+
     void Start()
     {
         _isSitting = false;
         _speed = _normalSpeed;
+
         Cursor.lockState = CursorLockMode.Locked;
     }
 
