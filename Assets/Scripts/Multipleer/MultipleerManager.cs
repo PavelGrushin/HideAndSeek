@@ -22,6 +22,6 @@ public class MultipleerManager : MonoBehaviourPunCallbacks
 
     public override void OnJoinedRoom()
     {
-        PhotonNetwork.LoadLevel("2_LobbyMultipleer");
+        PhotonNetwork.LoadLevel("2_LobbyMulti");
     }
 }

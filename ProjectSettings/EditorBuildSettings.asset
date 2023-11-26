@@ -12,8 +12,8 @@ EditorBuildSettings:
     path: Assets/Scenes/1_LobbySingle.unity
     guid: 082317c0035abe14a8802f6c07c3cd48
   - enabled: 1
-    path: Assets/Scenes/2_LobbyMultipleer.unity
-    guid: 7a8415df13b116545bd78c54d22a2418
+    path: Assets/Scenes/2_LobbyMulti.unity
+    guid: 8b001be8201065f4c950b576df0ff51a
   - enabled: 1
     path: Assets/Scenes/Map_1.unity
     guid: 3be4cc3b6184c7e4a8dc3b1f5e6b184a
