@@ -10,18 +10,18 @@ AnimatorStateMachine:
   m_Name: Base Layer
   m_ChildStates:
   - serializedVersion: 1
-    m_State: {fileID: 3137763241310040787}
-    m_Position: {x: -40, y: 310, z: 0}
+    m_State: {fileID: 5353310923612667676}
+    m_Position: {x: 80, y: -190, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
   m_StateMachineTransitions: {}
   m_StateMachineBehaviours: []
-  m_AnyStatePosition: {x: 50, y: 20, z: 0}
-  m_EntryPosition: {x: 50, y: 120, z: 0}
-  m_ExitPosition: {x: 800, y: 120, z: 0}
+  m_AnyStatePosition: {x: 100, y: -360, z: 0}
+  m_EntryPosition: {x: 100, y: -310, z: 0}
+  m_ExitPosition: {x: 100, y: -400, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
-  m_DefaultState: {fileID: 3137763241310040787}
+  m_DefaultState: {fileID: 5353310923612667676}
 --- !u!91 &9100000
 AnimatorController:
   m_ObjectHideFlags: 0
@@ -44,15 +44,15 @@ AnimatorController:
     m_IKPass: 0
     m_SyncedLayerAffectsTiming: 0
     m_Controller: {fileID: 9100000}
---- !u!1102 &3137763241310040787
+--- !u!1102 &5353310923612667676
 AnimatorState:
   serializedVersion: 6
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Zombie Running
-  m_Speed: 0.81
+  m_Name: Running
+  m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
   m_StateMachineBehaviours: []
@@ -64,7 +64,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: -203655887218126122, guid: 055ac5036b9abdd41a595a798b7185e6, type: 3}
+  m_Motion: {fileID: -203655887218126122, guid: 37a06fb845c339242aa34571dd970f9e, type: 3}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 

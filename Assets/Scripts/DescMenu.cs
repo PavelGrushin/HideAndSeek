@@ -6,13 +6,19 @@ public class DescMenu : MonoBehaviour
     [SerializeField] private GameObject _cameraMapDesc;
     [SerializeField] private GameObject _cameraShopDesc;
 
-    [SerializeField] private GameObject _crossHair;
-    [SerializeField] private PlayerMovement _movement;
+    private GameObject _crossHair;
+    private PlayerMovement _movement;
 
 
     private bool _menuDesc;
     private bool _mapDesc;
     private bool _shopDesc;
+
+    private void Start()
+    {
+        _crossHair = GameObject.Find("Crosshair");
+        _movement = FindObjectOfType<PlayerMovement>();
+    }
 
     private void Update()
     {
