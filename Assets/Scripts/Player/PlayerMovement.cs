@@ -1,4 +1,3 @@
-using Project;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
@@ -56,12 +55,6 @@ public class PlayerMovement : MonoBehaviour
         Jump();
         SitDown();
         ChangeCamera();
-
-        DragAndDropPresenter dragAndDropPresenter = FindObjectOfType<DragAndDropPresenter>();
-        if (!_cameraAktive)
-        {
-            //dragAndDropPresenter.Hand.position = new Vector3(-0.017f, -0.186f, 0.753f);
-        }
     }
 
     private void Move()                 //  Движение, повороты.
